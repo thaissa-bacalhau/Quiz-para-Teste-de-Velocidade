@@ -1,0 +1,204 @@
+#include <stdio.h>
+#include <locale.h>
+#include <windows.h>
+#include <conio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <ctype.h>
+
+int executarQuiz(const char *perguntas[], char gabarito[], int totalPerguntas) {
+    int acertos = 0, indices[10];
+    char resposta;
+
+    for (int i = 0; i < totalPerguntas; i++) {
+        indices[i] = i;
+    }
+
+    srand(time(NULL));
+    for (int i = totalPerguntas - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        int temp = indices[i];
+        indices[i] = indices[j];
+        indices[j] = temp;
+    }
+
+    for (int i = 0; i < totalPerguntas; i++) {
+        system("cls");
+        printf("Pergunta %d:\n%s\n", i + 1, perguntas[indices[i]]);
+        printf("\nPrima (v)erdadeiro ou (f)also: ");
+    
+	do {
+    
+	resposta = toupper(getch());
+    if (resposta != 'V' && resposta != 'F') {
+    system("color 47");
+	printf("\n\n\aEntrada inválida! Pressione apenas V ou F.\nR:");
+	Sleep(1000);
+	system("color 07");
+	   
+	}
+    
+	} while (resposta != 'V' && resposta != 'F');
+    printf("%c\n", resposta);
+    
+
+        if (resposta == gabarito[indices[i]]) {
+            acertos++;
+        }
+        Sleep(100); 
+    }
+
+    return acertos;
+}
+
+int main() {
+    
+	setlocale(LC_ALL, "");
+
+    int nivel, contadorjogadas=0, jogar_novamente = 1;
+    char op, resposta_final;
+
+    char respostas_iniciante[10] = { 'V', 'F', 'F', 'V', 'V', 'V', 'F', 'F', 'V', 'V' },
+	respostas_avancado[10] = { 'F', 'F', 'F', 'F', 'V', 'F', 'F', 'F', 'V', 'F' };
+
+    const char *perguntas_iniciante[10] = {
+        "\nA velocidade máxima numa autoestrada para automóveis ligeiros é 120 km/h.",
+        "\nÉ permitido ultrapassar pela direita em qualquer situação.",
+        "\nMotociclos de cilindrada inferior a 50 cm³ podem circular em autoestradas.",
+        "\nA velocidade mínima numa autoestrada é 50 km/h.",
+        "\nConduzir abaixo do limite mínimo pode ser perigoso.",
+        "\nA sinalização de limite de velocidade deve ser sempre respeitada.",
+        "\nUltrapassagens em curvas são sempre permitidas.",
+        "\nÉ permitido circular na berma para facilitar a ultrapassagem.",
+        "\nAutomóveis ligeiros com reboque têm limite inferior nas autoestradas.",
+        "\nEm zonas residenciais, a velocidade máxima é 50 km/h."
+    };
+
+    const char *perguntas_avancado[10] = {
+        "\nA velocidade máxima para veículos pesados é igual à dos ligeiros nas autoestradas.",
+        "\nPode-se usar sempre os máximos nas vias urbanas.",
+        "\nA distância de travagem não é afetada pela velocidade.",
+        "\nVeículos de mercadorias com reboque podem circular até 120 km/h.",
+        "\nO piso molhado aumenta a distância de travagem.",
+        "\nA fadiga não influencia o tempo de reação.",
+        "\nCircular a 90 km/h numa zona de 50 km/h é aceitável em situações de emergência.",
+        "\nVeículos prioritários devem sempre respeitar os limites de velocidade.",
+        "\nA chuva pode reduzir a aderência dos pneus à estrada.",
+        "\nO uso de telemóvel ao conduzir não influencia a atenção do condutor."
+    };
+
+    do {
+        // Menu
+        system("cls");
+        for (int i = 1; i <= 51; i++) { printf("*"); }
+        putchar('\n');
+        printf("* Quiz v1.0 - « Thaissa Bacalhau » | Menu Inicial *\n");
+        for (int i = 1; i <= 47; i++) { printf("*"); }
+        printf("2025\n");
+
+        printf("\nSelecione uma das opções: ");
+        printf("\n1 - Qual nível de dificuldade que pretende jogar?");
+        printf("\n2 - Instruções de utilização do quiz");
+        printf("\n3 - Sair");
+        printf("\nR: ");
+        op = getche();
+        system("cls");
+
+        switch (op) {
+	
+            case '1':
+            {
+                printf("1 - Inicial\n2 - Avançado\nR: ");
+				char escolha = getch();
+				printf("%c\n",escolha);
+				nivel = escolha - '0';
+                system("cls");
+
+                if (nivel == 1) {
+                int acertos = executarQuiz(perguntas_iniciante, respostas_iniciante, 10);
+                char verpontuacao;
+                contadorjogadas++;
+
+                Sleep(100);
+                do {
+                printf("\nDeseja saber a sua pontuação? (s/n): ");
+                verpontuacao = tolower(getche());
+
+                if (verpontuacao != 's' && verpontuacao != 'n') {
+                system("color 47");
+                printf("\n\n\aEntrada inválida! Pressione apenas (s)im ou (n)ão.\n");
+                Sleep(1000);
+                system("color 07");
+             }
+                } while (verpontuacao != 's' && verpontuacao != 'n');
+
+                if (verpontuacao == 's') {
+                printf("\n\nVocê acertou %d de 10 perguntas.\n", acertos);
+				                
+				}
+				
+
+             } else if (nivel == 2) {
+                int acertos = executarQuiz(perguntas_avancado, respostas_avancado, 10);
+                char verPontuacao;
+                contadorjogadas++;
+
+               Sleep(100);
+            
+			   do {
+               printf("\nDeseja saber a sua pontuação? (s/n): ");
+               verPontuacao = tolower(getche());
+
+               if (verPontuacao != 's' && verPontuacao != 'n') {
+               system("color 47");
+               printf("\n\n\aEntrada inválida! Pressione apenas (s)im ou (n)ão.\n");
+               Sleep(1000);
+               system("color 07");
+        }
+               }while (verPontuacao != 's' && verPontuacao != 'n');
+
+               if (verPontuacao == 's') {
+               printf("\n\nVocê acertou %d de 10 perguntas.\n", acertos);
+           }
+               }break;
+			}
+
+            case '2':
+            	{
+                printf("Para treinar as suas aptidões, selecione o nível de dificuldade:\n");
+                printf("\"Inicial\" com perguntas básicas ou \"Avançado\" com questões mais complexas.\n");
+                printf("\nPressione qualquer tecla para voltar ao menu.\n");
+                getch();
+                
+				}break;
+
+            case '3':
+                printf("Fim do Programa, volte sempre!\n");
+                jogar_novamente = 0;
+                break;
+
+            default:
+                printf("\n\aOpção incorreta, tente novamente\n");
+                system("color 47");
+                Sleep(400);
+                system("color 07");
+                printf("Pressione qualquer tecla para voltar ao menu\n");
+                getch();
+                break;
+        }
+
+                if (op == '1') {
+                printf("\nDeseja jogar novamente? (s/n): ");
+                resposta_final = tolower(getche());
+
+                if (resposta_final != 's') {
+                jogar_novamente = 0;
+                printf("\n\nObrigada por ter jogado %d vez%s ao meu quiz!\n",
+                contadorjogadas, contadorjogadas == 1 ? "" : "es");
+        }
+    }
+
+                } while (jogar_novamente);
+
+                return 0;
+}
